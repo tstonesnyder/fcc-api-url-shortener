@@ -30,12 +30,14 @@ module.exports = function (app) {
   // Trying to create a url with invalid format:
   app.route(['/new', '/new/*'])
     .get(function (req, res) {
+      console.log(`Request for invalid path: ${req.path}`);
       res.json({ 'error': 'URL is invalid' });
     });
   
   // Trying to go to some other page:
   app.route('*')
     .get(function (req, res) {
+      console.log(`Request for invalid path: ${req.path}`);
       res.status(404).sendFile(appCWD + '/public/404.html');
     });
 };

@@ -8,7 +8,9 @@ function urlHandler () {
   // Add a url to the db:
   var addUrl = function (req, res) {
     var appBaseUrl = req.protocol + "://" + req.get('host');
-    console.log(`appUrl = ${appBaseUrl}`);
+    // console.log(`appUrl = ${appBaseUrl}`);
+    // http://clem-tutorial-beg-tstonesnyder.c9users.io
+    // http://fcc-api-urlshortener.herokuapp.com
 
     var url = req.params[0];
     var urlNbr;
@@ -81,7 +83,7 @@ function urlHandler () {
         }
         
         if (!result) {
-          console.log(`getUrl: No such URL nbr. About to return error json.`);
+          console.log(`getUrl: No such URL nbr ${urlNbr}. About to return error json.`);
           return res.json({ 'error': 'Invalid url nbr' });
         }
         
