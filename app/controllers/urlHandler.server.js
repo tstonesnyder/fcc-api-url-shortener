@@ -42,7 +42,7 @@ function urlHandler () {
           .exec(function (err, result) {
             if (err) { throw err; }
             
-            if (!result) {
+            if (!result || result.length === 0) {
               // No docs in the db yet, so start w/ 1.
               urlNbr = 1;
             } else {
