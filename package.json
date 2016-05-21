@@ -1,0 +1,15 @@
+{
+  "name": "fcc-api-url-shortener",
+  "version": "1.0.0",
+  "description": "Free Code Camp URL Shortener Microservice Assignment",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "author": "tstonesnyder",
+  "license": "",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongoose": "^4.4.15"
+  }
+}
