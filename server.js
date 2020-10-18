@@ -1,29 +1,51 @@
 'use strict';
 
 // Express.js:
-var express = require('express');
+const express = require('express');
 // For communicating with MongoDB:
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 // Our code for handling routes:
-var routes = require('./app/routes/index.js');
+const routes = require('./app/routes/index.js');
 
-var app = express();
+const app = express();
 
-//require('dotenv').config({path: '/home/ubuntu/private/.env'});
+console.log(`server.js: app.settings.env: ${app.settings.env}`);
+if (app.settings.env === 'development') {
+  // ONLY NEED THIS IN DEV. On Heroku will store these in config vars (see Settings page).
 
-// Use the port that Heroku provides or default to 8080 (for Cloud9):
-var port = process.env.PORT || 8080;
+  /*  USING dotenv: 
+      Create a .env file in the root directory of your project. 
+      Add environment-specific variables on new lines in the form of NAME=VALUE. 
+      config() (alias load()) will read your .env file, parse the contents, 
+      assign it to process.env, and return an Object with a parsed key containing the loaded content or an error key if it failed.
+  */
+  require('dotenv').config();
+}
+if (!process.env.DB_URI) {
+  console.error('ERROR: Missing environment variables!');
+  console.dir (process.env);
+  process.exit(1);
+}
+// Use the port that Heroku provides or default to 8080 (for Cloud9 or local):
+const port = process.env.PORT || 8080;
 
-// RUNNING FROM DB ON CLOUD9 DATA DIR:
-// var mongoUri = 'mongodb://localhost:27017/urlshortener';
-// RUNNING FROM DB ON MLAB (set up by Heroku):
-var mongoUri = 'mongodb://heroku_19kjhcff:hov2a8gqmehlg6fko35nvgogsh@ds011883.mlab.com:11883/heroku_19kjhcff';
-
-//mongoose.connect(process.env.MONGO_URI);
-mongoose.connect(mongoUri);
+const dbConnectOptions = {
+  // https://mongoosejs.com/docs/deprecations.html
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+};
+mongoose.connect(process.env.DB_URI, dbConnectOptions, function (err) {
+  // OTHER WAYS of doing error handling: https://mongoosejs.com/docs/connections.html#error-handling
+  if (err) {
+    console.error('ERROR: Could not connect to MongoDB!');
+    throw err;
+  }
+  console.log('server.js: Connected to MongoDB');
+});
 
 routes(app);
-  
+
 app.listen(port, function () {
   console.log('Listening on port ' + port + '...');
 });
