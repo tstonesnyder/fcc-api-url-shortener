@@ -26,7 +26,7 @@ if (!process.env.DB_URI) {
   console.dir (process.env);
   process.exit(1);
 }
-// Use the port that Heroku provides or default to 8080 (for Cloud9 or local):
+// Use the port that Heroku (now Render) provides or default to 8080 (for Cloud9 or local):
 const port = process.env.PORT || 8080;
 
 const dbConnectOptions = {
@@ -38,7 +38,8 @@ const dbConnectOptions = {
 mongoose.connect(process.env.DB_URI, dbConnectOptions, function (err) {
   // OTHER WAYS of doing error handling: https://mongoosejs.com/docs/connections.html#error-handling
   if (err) {
-    console.error('ERROR: Could not connect to MongoDB!');
+    console.error('ERROR: Could not connect to MongoDB at Atlas! You may need to logon to Atlas and RESUME the db (3-5 min).');
+    
     throw err;
   }
   console.log('server.js: Connected to MongoDB');
@@ -47,6 +48,6 @@ mongoose.connect(process.env.DB_URI, dbConnectOptions, function (err) {
 routes(app);
 
 app.listen(port, function () {
-  console.log('Listening on port ' + port + '...');
+  console.log('Listening on port ' + port + '. If running locally, go to localhost:' + port);
 });
 
