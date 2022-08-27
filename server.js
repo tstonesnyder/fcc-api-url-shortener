@@ -38,9 +38,8 @@ const dbConnectOptions = {
 mongoose.connect(process.env.DB_URI, dbConnectOptions, function (err) {
   // OTHER WAYS of doing error handling: https://mongoosejs.com/docs/connections.html#error-handling
   if (err) {
-    console.error('ERROR: Could not connect to MongoDB at Atlas! You may need to logon to Atlas and RESUME the db (3-5 min).');
-    
-    throw err;
+    console.error('ERROR: Could not connect to MongoDB at Atlas! You may need to logon to Atlas and RESUME the database.', err);
+    process.exit(1);
   }
   console.log('server.js: Connected to MongoDB');
 });
